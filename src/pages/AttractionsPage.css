@@ -1,0 +1,195 @@
+/* Page Header */
+.page-header {
+  background: linear-gradient(135deg, var(--secondary-accent) 0%, var(--primary-accent) 100%);
+  color: var(--white);
+  padding: var(--spacing-2xl) 0 var(--spacing-xl) 0;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.page-header h1 {
+  color: var(--white);
+  font-size: 3rem;
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.page-header p {
+  font-size: 1.25rem;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+/* Page Content */
+.page-content {
+  padding-bottom: var(--spacing-2xl);
+}
+
+/* Filter Section */
+.filter-section {
+  margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+
+.filter-section h3 {
+  margin-bottom: var(--spacing-md);
+  color: var(--dark-text);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background-color: var(--white);
+  color: var(--secondary-neutral);
+  border: 2px solid var(--secondary-neutral);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-family: var(--font-body);
+}
+
+.filter-btn:hover {
+  color: var(--secondary-accent);
+  border-color: var(--secondary-accent);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background-color: var(--secondary-accent);
+  color: var(--white);
+  border-color: var(--secondary-accent);
+}
+
+/* Distance Info */
+.distance-info {
+  background-color: rgba(42, 157, 143, 0.1);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+
+.distance-info p {
+  margin: 0;
+  color: var(--secondary-accent);
+  font-weight: 500;
+}
+
+/* Attractions Grid */
+.attractions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* Nearby Card Wrapper */
+.nearby-card-wrapper {
+  position: relative;
+}
+
+.distance-badge {
+  position: absolute;
+  top: var(--spacing-sm);
+  left: var(--spacing-sm);
+  background-color: rgba(231, 111, 81, 0.9);
+  color: var(--white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  grid-column: 1 / -1;
+}
+
+.no-results h3 {
+  color: var(--dark-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.no-results p {
+  color: var(--secondary-neutral);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .page-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .page-header p {
+    font-size: 1.125rem;
+  }
+  
+  .attractions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: var(--spacing-xl) 0;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+  }
+  
+  .filter-buttons {
+    gap: var(--spacing-xs);
+  }
+  
+  .filter-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.875rem;
+  }
+  
+  .attractions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .distance-info {
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .attractions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .filter-btn {
+    min-width: 120px;
+  }
+} 
