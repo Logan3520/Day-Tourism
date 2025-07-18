@@ -25,7 +25,14 @@ const AttractionDetail = () => {
     <div className="attraction-detail">
       {/* Hero Image Section */}
       <div className="detail-hero">
-        <img src={attraction.image} alt={attraction.name} className="detail-hero-image" />
+        <img 
+          src={attraction.image} 
+          alt={attraction.name} 
+          className="detail-hero-image"
+          onError={(e) => {
+            e.target.src = "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&auto=format&fit=crop&q=80&ixlib=rb-4.0.3";
+          }}
+        />
         <div className="detail-hero-overlay">
           <div className="container">
             <div className="detail-hero-content">

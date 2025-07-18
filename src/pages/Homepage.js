@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AttractionCard from '../components/AttractionCard';
 import Button from '../components/Button';
 import { puneAttractions } from '../data/puneAttractions';
+import shaniwarWadaImage from '../assets/pictures/Shaniar wada.jpg';
 import './Homepage.css';
 
 const Homepage = () => {
@@ -13,12 +14,15 @@ const Homepage = () => {
     <div className="homepage">
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-background">
-          <img 
-            src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1600&auto=format&fit=crop&q=80" 
-            alt="Shaniwar Wada - Historic fort in Pune" 
-            className="hero-image"
-          />
+                  <div className="hero-background">
+            <img 
+              src={shaniwarWadaImage} 
+              alt="Shaniwar Wada - Historic fort in Pune" 
+              className="hero-image"
+              onError={(e) => {
+                e.target.src = "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=1600&auto=format&fit=crop&q=80&ixlib=rb-4.0.3";
+              }}
+            />
           <div className="hero-overlay"></div>
         </div>
         
