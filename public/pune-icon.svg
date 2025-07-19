@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="256" cy="256" r="256" fill="#4CAF50"/>
+  <path d="M128 196 L180 156 L230 166 L280 146 L320 176 L360 186 L380 236 L360 276 L320 306 L280 326 L230 316 L180 336 L150 306 L128 276 L148 236 Z" 
+        fill="white" 
+        stroke="#388E3C" 
+        stroke-width="8"/>
+  <text x="256" y="400" 
+        text-anchor="middle" 
+        font-family="Arial, sans-serif" 
+        font-size="48" 
+        font-weight="bold" 
+        fill="white">PUNE</text>
+</svg>
