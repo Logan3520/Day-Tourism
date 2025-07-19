@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import AttractionCard from '../components/AttractionCard';
-import Button from '../components/Button';
-import { puneAttractions } from '../data/puneAttractions';
-import shaniwarWadaImage from '../assets/pictures/Shaniar wada.jpg';
-import './Homepage.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import AttractionCard from "../components/AttractionCard";
+import Button from "../components/Button";
+import { puneAttractions } from "../data/puneAttractions";
+import shaniwarWadaImage from "../assets/pictures/Shaniar wada.jpg";
+import "./Homepage.css";
 
 const Homepage = () => {
   // Get featured attractions (first 4 from the data)
@@ -14,27 +14,28 @@ const Homepage = () => {
     <div className="homepage">
       {/* Hero Section */}
       <section className="hero">
-                  <div className="hero-background">
-            <img 
-              src={shaniwarWadaImage} 
-              alt="Shaniwar Wada - Historic fort in Pune" 
-              className="hero-image"
-              onError={(e) => {
-                e.target.src = "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=1600&auto=format&fit=crop&q=80&ixlib=rb-4.0.3";
-              }}
-            />
+        <div className="hero-background">
+          <img
+            src={shaniwarWadaImage}
+            alt="Shaniwar Wada - Historic fort in Pune"
+            className="hero-image"
+            onError={(e) => {
+              e.target.src =
+                "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=1600&auto=format&fit=crop&q=80&ixlib=rb-4.0.3";
+            }}
+          />
           <div className="hero-overlay"></div>
         </div>
-        
+
         <div className="hero-content">
           <div className="container">
             <div className="hero-text">
               <h1 className="hero-title">Discover Pune's Heart & Soul</h1>
               <p className="hero-subtitle">
-                Explore Historic Wonders, Serene Landscapes, and Vibrant Culture 
+                Explore Historic Wonders, Serene Landscapes, and Vibrant Culture
                 in and around the Oxford of the East.
               </p>
-              
+
               <div className="hero-actions">
                 <Link to="/pune-attractions">
                   <Button variant="primary" size="large">
@@ -59,16 +60,13 @@ const Homepage = () => {
             <h2>Featured Attractions</h2>
             <p>Discover the most popular destinations that make Pune special</p>
           </div>
-          
+
           <div className="featured-grid">
-            {featuredAttractions.map(attraction => (
-              <AttractionCard 
-                key={attraction.id} 
-                attraction={attraction} 
-              />
+            {featuredAttractions.map((attraction) => (
+              <AttractionCard key={attraction.id} attraction={attraction} />
             ))}
           </div>
-          
+
           <div className="section-footer">
             <Link to="/pune-attractions">
               <Button variant="ghost" size="medium">
@@ -85,8 +83,9 @@ const Homepage = () => {
           <div className="cta-content">
             <h2>Ready to Explore?</h2>
             <p>
-              From ancient forts to serene hill stations, from spiritual centers to modern attractions - 
-              Pune and its surroundings offer something for every traveler.
+              From ancient forts to serene hill stations, from spiritual centers
+              to modern attractions - Pune and its surroundings offer something
+              for every traveler.
             </p>
             <div className="cta-actions">
               <Link to="/pune-attractions">
@@ -102,4 +101,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage; 
+export default Homepage;
