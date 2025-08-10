@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { HOMEPAGE_CITIES } from "../constants/cities";
-import "./Homepage.css";
+import "./CitySelection.css";
 
-function Homepage() {
+function CitySelection() {
   const navigate = useNavigate();
 
   const cities = HOMEPAGE_CITIES;
@@ -13,7 +13,7 @@ function Homepage() {
   };
 
   return (
-    <div className="homepage">
+    <div className="city-selection">
       {/* Hero Section */}
       <section className="selection-hero">
         <div className="hero-content">
@@ -88,4 +88,4 @@ function Homepage() {
   );
 }
 
-export default Homepage;
+export default CitySelection; 

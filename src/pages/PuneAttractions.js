@@ -1,66 +1,107 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import APIService from '../services/api';
 import AttractionCard from '../components/AttractionCard';
-import { puneAttractions } from '../data/puneAttractions';
 import './AttractionsPage.css';
 
-const PuneAttractions = () => {
-  const [filter, setFilter] = useState('all');
-  
-  // Get unique categories for filter buttons
-  const categories = ['all', ...new Set(puneAttractions.map(attraction => attraction.category))];
-  
-  // Filter attractions based on selected category
-  const filteredAttractions = filter === 'all' 
-    ? puneAttractions 
-    : puneAttractions.filter(attraction => attraction.category === filter);
+function PuneAttractions() {
+  const [attractions, setAttractions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filteredAttractions, setFilteredAttractions] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  useEffect(() => {
+    const fetchAttractions = async () => {
+      try {
+        setLoading(true);
+        const data = await APIService.getPuneAttractions();
+        setAttractions(data);
+        setFilteredAttractions(data);
+      } catch (err) {
+        setError('Failed to load attractions. Please try again later.');
+        console.error('Error fetching attractions:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAttractions();
+  }, []);
+
+  const handleCategoryFilter = (category) => {
+    setSelectedCategory(category);
+    if (category === 'all') {
+      setFilteredAttractions(attractions);
+    } else {
+      const filtered = attractions.filter(attraction => 
+        attraction.category.toLowerCase() === category.toLowerCase()
+      );
+      setFilteredAttractions(filtered);
+    }
+  };
+
+  const categories = ['all', ...new Set(attractions.map(attraction => attraction.category))];
+
+  if (loading) {
+    return (
+      <div className="attractions-page">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading attractions...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="attractions-page">
+        <div className="error-container">
+          <h2>Oops! Something went wrong</h2>
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()} className="retry-button">
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="attractions-page">
-      <div className="page-header">
-        <div className="container">
-          <h1>Pune City Attractions</h1>
-          <p>Discover the rich heritage, vibrant culture, and hidden gems within Pune city</p>
+      <header className="attractions-header">
+        <h1>Discover Pune</h1>
+        <p>Explore the rich heritage and vibrant culture of the cultural capital of Maharashtra</p>
+      </header>
+
+      <div className="filter-section">
+        <h3>Filter by Category:</h3>
+        <div className="category-filters">
+          {categories.map(category => (
+            <button
+              key={category}
+              className={`filter-btn ${selectedCategory === category ? 'active' : ''}`}
+              onClick={() => handleCategoryFilter(category)}
+            >
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="page-content">
-        <div className="container">
-          {/* Filter Buttons */}
-          <div className="filter-section">
-            <h3>Filter by Category</h3>
-            <div className="filter-buttons">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  className={`filter-btn ${filter === category ? 'active' : ''}`}
-                  onClick={() => setFilter(category)}
-                >
-                  {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Attractions Grid */}
-          <div className="attractions-grid">
-            {filteredAttractions.map(attraction => (
-              <AttractionCard 
-                key={attraction.id} 
-                attraction={attraction} 
-              />
-            ))}
-          </div>
-
-          {filteredAttractions.length === 0 && (
-            <div className="no-results">
-              <h3>No attractions found</h3>
-              <p>Try selecting a different category filter.</p>
-            </div>
-          )}
-        </div>
+      <div className="attractions-grid">
+        {filteredAttractions.map(attraction => (
+          <AttractionCard key={attraction.id} attraction={attraction} />
+        ))}
       </div>
+
+      {filteredAttractions.length === 0 && (
+        <div className="no-results">
+          <p>No attractions found for the selected category.</p>
+        </div>
+      )}
     </div>
   );
-};
+}
 
 export default PuneAttractions; 

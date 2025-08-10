@@ -1,127 +1,153 @@
-import React from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import APIService from '../services/api';
 import Button from '../components/Button';
-import { puneAttractions } from '../data/puneAttractions';
-import { nearbyAttractions } from '../data/nearbyAttractions';
 import './AttractionDetail.css';
 
-const AttractionDetail = () => {
+function AttractionDetail() {
   const { id } = useParams();
-  
-  // Combine both data sources to find the attraction
-  const allAttractions = [...puneAttractions, ...nearbyAttractions];
-  const attraction = allAttractions.find(attr => attr.id === parseInt(id));
+  const navigate = useNavigate();
+  const [attraction, setAttraction] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // If attraction not found, redirect to homepage
-  if (!attraction) {
-    return <Navigate to="/" replace />;
+  useEffect(() => {
+    const fetchAttraction = async () => {
+      try {
+        setLoading(true);
+        const data = await APIService.getAttractionById(parseInt(id));
+        setAttraction(data);
+      } catch (err) {
+        setError('Failed to load attraction details. Please try again later.');
+        console.error('Error fetching attraction:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAttraction();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="attraction-detail">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading attraction details...</p>
+        </div>
+      </div>
+    );
   }
 
-  const isPuneAttraction = puneAttractions.some(attr => attr.id === attraction.id);
-  const backLink = isPuneAttraction ? '/pune-attractions' : '/nearby-attractions';
-  const backText = isPuneAttraction ? 'Back to Pune Attractions' : 'Back to Nearby Attractions';
+  if (error || !attraction) {
+    return (
+      <div className="attraction-detail">
+        <div className="error-container">
+          <h2>Attraction Not Found</h2>
+          <p>{error || 'The attraction you are looking for does not exist.'}</p>
+          <Button 
+            text="Go Back Home" 
+            onClick={() => navigate('/')}
+            variant="primary"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="attraction-detail">
-      {/* Hero Image Section */}
       <div className="detail-hero">
         <img 
           src={attraction.image} 
-          alt={attraction.name} 
-          className="detail-hero-image"
-          onError={(e) => {
-            e.target.src = "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&auto=format&fit=crop&q=80&ixlib=rb-4.0.3";
-          }}
+          alt={attraction.name}
+          className="hero-image"
         />
-        <div className="detail-hero-overlay">
+        <div className="hero-overlay">
           <div className="container">
-            <div className="detail-hero-content">
-              <h1 className="detail-title">{attraction.name}</h1>
-              <div className="detail-tags">
+            <div className="hero-content">
+              <h1>{attraction.name}</h1>
+              <p className="hero-description">{attraction.shortDescription}</p>
+              <div className="hero-tags">
                 {attraction.tags.map((tag, index) => (
-                  <span key={index} className="detail-tag">
-                    {tag}
-                  </span>
+                  <span key={index} className="tag">{tag}</span>
                 ))}
               </div>
-              {attraction.distance && (
-                <div className="detail-distance">
-                  📍 {attraction.distance} from Pune
-                </div>
-              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="detail-content">
         <div className="container">
-          <div className="detail-grid">
-            {/* Main Content */}
-            <div className="detail-main">
-              <section className="detail-section">
+          <div className="content-grid">
+            <div className="main-content">
+              <section className="description-section">
                 <h2>About This Place</h2>
-                <p className="detail-description">{attraction.fullDescription}</p>
+                <p>{attraction.fullDescription}</p>
               </section>
 
-              <section className="detail-section">
-                <h2>Nearby Food & Activities</h2>
+              <section className="activities-section">
+                <h2>Things to Do</h2>
                 <p>{attraction.nearbyActivities}</p>
               </section>
-            </div>
 
-            {/* Sidebar */}
-            <div className="detail-sidebar">
-              <div className="info-card">
-                <h3>Key Information</h3>
-                <div className="info-list">
-                  <div className="info-item">
-                    <strong>Timings:</strong>
-                    <span>{attraction.timings}</span>
-                  </div>
-                  <div className="info-item">
-                    <strong>Entry Fee:</strong>
-                    <span>{attraction.entryFee}</span>
-                  </div>
-                  <div className="info-item">
-                    <strong>Best Time to Visit:</strong>
-                    <span>{attraction.bestTimeToVisit}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="info-card">
-                <h3>How to Reach</h3>
+              <section className="reach-section">
+                <h2>How to Reach</h2>
                 <p>{attraction.howToReach}</p>
+              </section>
+            </div>
+
+            <div className="sidebar">
+              <div className="info-card">
+                <h3>Quick Information</h3>
+                
+                <div className="info-item">
+                  <strong>⏰ Timings</strong>
+                  <p>{attraction.timings}</p>
+                </div>
+
+                <div className="info-item">
+                  <strong>💰 Entry Fee</strong>
+                  <p>{attraction.entryFee}</p>
+                </div>
+
+                <div className="info-item">
+                  <strong>🌟 Best Time to Visit</strong>
+                  <p>{attraction.bestTimeToVisit}</p>
+                </div>
+
+                <div className="info-item">
+                  <strong>📍 Category</strong>
+                  <span className="category-badge">{attraction.category}</span>
+                </div>
+
+                {attraction.distance && (
+                  <div className="info-item">
+                    <strong>📏 Distance from Pune</strong>
+                    <p>{attraction.distance}</p>
+                  </div>
+                )}
               </div>
 
-              {/* Static Map Placeholder */}
-              <div className="info-card">
-                <h3>Location</h3>
-                <div className="map-placeholder">
-                  <div className="map-content">
-                    <span className="map-icon">📍</span>
-                    <p>Interactive map coming soon</p>
-                    <small>For now, use the directions above to reach this destination</small>
-                  </div>
-                </div>
+              <div className="action-buttons">
+                <Button 
+                  text="Back to Attractions" 
+                  onClick={() => navigate(-1)}
+                  variant="secondary"
+                />
+                <Button 
+                  text="Plan Your Visit" 
+                  onClick={() => window.open(`https://maps.google.com/maps?q=${encodeURIComponent(attraction.name + ' Pune')}`, '_blank')}
+                  variant="primary"
+                />
               </div>
             </div>
-          </div>
-
-          {/* Back Button */}
-          <div className="detail-actions">
-            <Link to={backLink}>
-              <Button variant="secondary" size="medium">
-                ← {backText}
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default AttractionDetail; 
